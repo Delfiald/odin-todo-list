@@ -6,6 +6,7 @@ import projectsHandler from "./projectsHandler";
 import projectRemoveHandlers from "./projectRemoveHandlers";
 import projectEditHandlers from "./projectEditHandlers";
 import addProjectHandlers from "./addProjectHandlers";
+import todoCardHandlers from "./todoCardHandlers";
 
 export default () => {
   document.addEventListener('click', (e) => {
@@ -24,6 +25,10 @@ export default () => {
       projectsHandler(e);
     }else if(target.closest('.bottom-wrapper .add-btn')){
       addProjectHandlers();
+    }else if(target.closest('.todo-card .todo-complete')){
+      todoCardHandlers(e).setToCompleted();
+    }else if(target.closest('.todo-card')){
+      todoCardHandlers(e).getTodoDetails();
     }else if(target.closest('.mode-btn')){
       modeButton();
     }

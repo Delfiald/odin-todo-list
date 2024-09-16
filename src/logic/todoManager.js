@@ -2,11 +2,11 @@ export default (() => {
   const todoList = [];
   let todoIdCounter = 1;
 
-  const createTodoObject = (title, date, descriptions, priority, projectId, id) => ({
+  const createTodoObject = (title, date, description, priority, projectId, id) => ({
       id: id,
       title: title,
       date: date,
-      descriptions: descriptions,
+      description: description,
       priority: priority,
       completed: false,
       projectId: projectId
@@ -17,13 +17,13 @@ export default (() => {
   }
 
   return {
-    createTodo: (title, date, descriptions, priority, projectId, id = todoIdCounter++) => {
+    createTodo: (title, date, description, priority, projectId, id = todoIdCounter++) => {
       const existingIndex = findIndex(id);
 
       if(existingIndex !== -1) {
-        todoList[existingIndex] = createTodoObject(title, date, descriptions, priority, projectId, id);
+        todoList[existingIndex] = createTodoObject(title, date, description, priority, projectId, id);
       }else {
-        const todo = createTodoObject(title, date, descriptions, priority, projectId, id);
+        const todo = createTodoObject(title, date, description, priority, projectId, id);
         todoList.push(todo);
       }
     },
@@ -42,6 +42,8 @@ export default (() => {
       if(index === -1) {
         throw new Error(`Todo with id ${id} not found.`);
       }
+
+      console.log(`todoList ${index} set to true`);
 
       todoList[index].completed = !todoList[index].completed;
     },
@@ -62,6 +64,15 @@ export default (() => {
     },
     getTodoByProjectId: (projectId) => {
       return todoList.filter(todo => todo.projectId === projectId);
+    },
+    getTodoById: (id) => {
+      const index = findIndex(id);
+
+      if(index === -1) {
+        throw new Error(`Todo with id ${id} not found.`);
+      }
+
+      return todoList[index];;
     }
   }
 })()
