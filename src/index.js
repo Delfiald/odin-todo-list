@@ -8,6 +8,9 @@ import main from './components/main'
 import buttonHandlers from './handlers/buttonHandlers'
 import inboxHandlers from './handlers/inboxHandlers'
 
+// Test
+import test from './logic/test'
+
 (() => {
   const appendContent = () => {
     const body = document.querySelector("body");
@@ -21,5 +24,6 @@ import inboxHandlers from './handlers/inboxHandlers'
 
   window.onload = () => {
     appendContent();
+    test();
   }
 })()
