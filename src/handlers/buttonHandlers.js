@@ -31,6 +31,8 @@ export default () => {
     }else if(target.closest('.bottom-wrapper .project-btn')){
       projectsHandler(e);
       removeDetails();
+    }else if(e.target.closest('.details .close-btn')){
+      removeDetails();
     }else if(target.closest('.bottom-wrapper .add-btn')){
       modalHandlers.addProject();
     }else if(target.closest('.modal .project .submit-btn')){

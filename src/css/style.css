@@ -625,6 +625,30 @@ main .project {
   font-size: .75rem;
 }
 
+.details .close-btn {
+  position: absolute;
+  left: 0;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background: var(--color-200-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-600-dark);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.details .close-btn i {
+  transition: var(--transition-speed-medium) all ease;
+}
+
+.details .close-btn:hover i {
+  transform: translateX(25%);
+}
+
 /* Modals */
 .modal {
   position: absolute;

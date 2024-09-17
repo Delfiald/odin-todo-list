@@ -25,7 +25,11 @@ export default (todo) => {
   child.append(detailsBottom, editButton, removeButton)
 
   child.append(detailsWrapper, title, priority, date, descriptions, completed, detailsBottom);
-  child.append(details, detailsWrapper)
+
+  const detailClose = element.create('div', ['close-btn']);
+  const closeIcon = element.create('i', ['fas', 'fa-chevron-right'])
+  child.append(detailClose, closeIcon)
+  child.append(details, detailsWrapper, detailClose)
   
   return details;
 }
