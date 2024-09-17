@@ -1,5 +1,5 @@
 export default (() => {
-  const todoList = [];
+  let todoList = [];
   let todoIdCounter = 1;
 
   const createTodoObject = (title, date, description, priority, projectId, id) => ({

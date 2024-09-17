@@ -18,14 +18,16 @@ export default (() => {
 
       if(index !== -1){
         projectList[index] = newProjectObject(title, icon, id);
+        return projectList[index];
       }else {
         const project = newProjectObject(title, icon, id)
         projectList.push(project);
+        return project;
       }
     },
 
     removeProject: (id) => {
-      const index = findIndex(id);
+      const index = findIndex(parseInt(id));
 
       if(index === -1) {
         throw new Error(`Project with id ${id} not found.`);

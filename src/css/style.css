@@ -62,11 +62,48 @@ a:hover {
 body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
-  display: grid;
-  grid-template-columns: .2fr 1fr;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: var(--color-200-light);
+}
+
+input {
+  border: none;
+  outline: none;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  border-radius: 10px;
+}
+
+.modal .input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modal .input.text label {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  transition: var(--transition-speed-medium) all ease;
+}
+
+.modal .input.text input:focus ~ label,
+.modal .input.text input:not(:placeholder-shown) ~ label {
+  top: -50%;
+}
+
+.modal .input.text input::placeholder {
+  opacity: 0;
+  transition: var(--transition-speed-medium) all ease;
+}
+
+.modal .input.text input:focus::placeholder {
+  opacity: 1;
 }
 
 /* Aside */
@@ -197,6 +234,7 @@ aside .bottom {
   justify-items: start;
   z-index: 1;
   background: var(--color-200-light);
+  width: 100%;
 }
 
 aside .bottom-wrapper {
@@ -290,24 +328,53 @@ footer .footer-wrapper {
 
 /* Main */
 main {
+  position: relative;
+  flex: 1 0 50%;
+  min-height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow-x: hidden;
-  height: min-content;
 }
 
 /* Project */
-.project {
+main .project {
+  position: relative;
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: 1rem 2.5rem;
+  gap: 1rem;
+}
+
+.project .todo-add-btn {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  align-self: flex-start;
+  border: 2px dashed var(--color-700-light);
+  padding: .5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition-speed-medium) all ease;
+}
+
+.project .todo-add-btn:hover {
+  border-style: solid;
+  background: var(--color-600-dark);
+  color: var(--color-200-light);
 }
 
 .project .todo-wrapper {
   height: 100%;
+  width: 100%;
   flex: 1 1 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -428,4 +495,255 @@ main {
 .project .todo-wrapper .todo-card .todo-complete:hover {
   background: green;
   color: var(--color-200-light);
+}
+
+.project .todo-wrapper .todo-add-btn {
+  
+}
+
+/* Details */
+.details {
+  top: 0;
+  position: sticky;
+  align-self: start;
+  padding: 1rem;
+  height: 100vh;
+  flex: 0 1 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid var(--color-700-light);
+}
+
+.details-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.details .date,
+.details .description,
+.details .completed,
+.details .details-bottom {
+  grid-column: 1 / -1;
+}
+
+.details .priority {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+.details .priority-indicator {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  --_color: var(--color-600-dark);
+  background: var(--_color);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.details .priority-indicator.high {
+  --_color: red;
+}
+
+.details .priority-indicator.medium {
+  --_color: yellow;
+}
+
+.details .priority-indicator.low {
+  --_color: green;
+}
+
+.details .priority-indicator::before,
+.details .priority-indicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-700-light);
+  border-radius: 50%;
+  animation: indicator 1.25s ease-in-out infinite;
+  opacity: .75;
+}
+
+.details .priority-indicator::after {
+  background: var(--_color);
+  border-radius: 50%;
+  animation: indicator 1.25s ease-in-out .25s infinite;
+}
+
+.details .description {
+  min-height: 150px;
+}
+
+.details .completed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border: 1px solid var(--color-700-light);
+  border-radius: 20px;
+  transition: var(--transition-speed-medium) all ease;
+  cursor: pointer;
+}
+
+.details .completed:hover {
+  background: green;
+  color: var(--color-200-light);
+  font-weight: 700;
+}
+
+.details .details-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.details .btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-700-light);
+}
+
+.details .edit-btn:hover {
+  color: green;
+}
+
+.details .remove-btn:hover {
+  color: red;
+}
+
+.details .date {
+  font-size: .75rem;
+}
+
+/* Modals */
+.modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.modal .modal-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal .modal-wrapper::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: var(--color-600-dark);
+  opacity: .5;
+  z-index: -1;
+}
+
+.modal .modal-container {
+  position: relative;
+  background: var(--color-400-light);
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+  min-height: 35vh;
+  min-width: 25vw;
+}
+
+.modal .input > div {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  background: var(--color-700-light);
+  border-radius: 50%;
+  transition: var(--transition-speed-fast) all ease;
+}
+
+.modal .input > div input {
+  display: none;
+}
+
+.modal .input > div label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.modal .input > div:hover {
+  transform: scale(1.01);
+}
+
+.modal .input > div input:checked ~ label {
+  border: 1px solid var(--color-400-dark);
+}
+
+.modal .modal-container .cancel-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: .5rem;
+  cursor: pointer;
+  color: var(--color-600-dark);
+}
+
+.modal .modal-container .cancel-btn:hover {
+  color: var(--color-200-dark);
+}
+
+.modal .modal-container .submit-btn {
+  padding: .5rem 1rem;
+  border-color: var(--color-700-light);
+}
+
+.modal .modal-container .submit-btn:hover {
+  background: var(--color-400-dark);
+  color: var(--color-200-light);
+}
+
+.modal .remove-header {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid red;
+  border-radius: 50%;
+  font-size: 2rem;
+  color: red;
+}
+
+@keyframes indicator {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
