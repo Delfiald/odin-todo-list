@@ -3,7 +3,7 @@ import upcomingHandlers from "./upcomingHandlers";
 import completedHandlers from "./completedHandlers";
 import modeButton from './modeButtonHandlers'
 import todoCardHandlers from "./todoCardHandlers";
-import projectsHandler from "./projectsHandler";
+import projectsHandler from "./projectsHandlers";
 
 import {removeDetails} from "./detailsHandlers";
 import modalHandlers from "./modalHandlers";

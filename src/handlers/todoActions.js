@@ -4,10 +4,13 @@ import {createTodo} from "../components/todo"
 import {removeDetails} from "./detailsHandlers";
 import { formatDistanceToNow } from "date-fns";
 import details from "../components/details";
+import emptyComponentHandlers from "./emptyComponentHandlers";
+import projects from "../components/projects";
 
 export default () => {
   return {
     addTodo: () => {
+      const projectWrapper = document.querySelector('main .project');
       const todo = document.querySelector('main .todo-wrapper')
       let todoData = inputValidator.validateTodoInput();
 
@@ -58,12 +61,23 @@ export default () => {
           const todo = todos.find(item => item.dataset.todo == todoId);
 
           todo.remove();
+
+          if(todos.length <= 1){
+            projectWrapper.textContent = '';
+            projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+            removeDetails();
+          }
         }
       }else {
         const newTodo = todoManager.createTodo(todoData.title, todoData.date, todoData.description, todoData.priority, todoData.projectId);
 
-        if(parseInt(projectActive) === todoData.projectId){
-          todo.appendChild(createTodo(newTodo));
+        if(todo){
+          if(parseInt(projectActive) === todoData.projectId){
+            todo.appendChild(createTodo(newTodo));
+          }
+        }else{
+          projectWrapper.textContent = '';
+          projectWrapper.appendChild(projects(todoData.projectId));
         }
       }
     
@@ -71,15 +85,22 @@ export default () => {
       modal.remove();
     },
     removeTodo: () => {
+      const projectWrapper = document.querySelector('main .project');
       const todoId = parseInt(document.querySelector('.details').dataset.todo);
 
       const todoCards = Array.from(document.querySelectorAll('main .todo-card'));
 
       let todoCard = todoCards.find(card => parseInt(card.dataset.todo) === todoId)
 
+      if(todoCards.length <= 1){
+        projectWrapper.textContent = '';
+        projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+      }
+
       if(todoCard) {
         todoCard.remove();
       }
+
 
       todoManager.removeTodo(todoId);
       removeDetails();

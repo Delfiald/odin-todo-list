@@ -1,20 +1,25 @@
 import element from '../utils/createElement'
 import child from '../utils/appendChild'
 
-import getProject from '../logic/getProject';
 import todo from "../components/todo";
+import todoManager from '../logic/todoManager';
+
+import emptyComponentHandlers from '../handlers/emptyComponentHandlers';
 
 export default (dataset) => {
   const projects = element.create('section', ['project']);
+  const todoList = todoManager.getTodoByProjectId(parseInt(dataset));
 
-  const addButton = element.create('div', ['todo-add-btn']);
-  const addIcon = element.create('i', ['fas', 'fa-plus']);
-  const addText = element.create('div', ['add-text'], 'New Todo');
-  child.append(addButton, addIcon, addText);
-
-  child.append(projects, addButton, todo(dataset))
-
-  getProject.getByDataset(dataset);
+  if(todoList.length === 0) {
+    child.append(projects, emptyComponentHandlers().projectEmpty())
+  }else{
+    const addButton = element.create('div', ['todo-add-btn']);
+    const addIcon = element.create('i', ['fas', 'fa-plus']);
+    const addText = element.create('div', ['add-text'], 'New Todo');
+  
+    child.append(addButton, addIcon, addText);
+    child.append(projects, addButton, todo(dataset))
+  }
 
   return projects;
 }
