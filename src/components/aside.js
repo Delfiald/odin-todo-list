@@ -1,5 +1,6 @@
 import element from '../utils/createElement'
 import child from '../utils/appendChild'
+import projectManager from '../logic/projectManager';
 
 const createSectionTop = () => {
   // Aside Content
@@ -59,13 +60,32 @@ const createSectionBottom = () => {
 }
 
 const createProjects = (sectionContent) => {
-  // Ntar tinggal loop trus ganti parameter dengan variable dari JSON atau apalah nanti itu
+  sectionContent.textContent = '';
+  const projects = projectManager.getProject();
+  for(let projectItem of projects){
+    const project = element.create('div', ['project-btn', 'btn'])
+    // setAttribute
+    project.setAttribute('data-project', projectItem.id);
+    const projectIcon = element.create('div', ['project-icon'], projectItem.icon)
+    const projectName = element.create('div', ['project-name'], projectItem.title)
+    const projectActions = element.create('div', ['project-actions'])
+    const projectEditButton = element.create('i', ['fas', 'fa-edit', 'edit-btn'])
+    const projectDeleteButton = element.create('i', ['fas', 'fa-trash', 'remove-btn'])
   
+    child.append(projectActions, projectEditButton, projectDeleteButton)
+  
+    child.append(project, projectIcon, projectName, projectActions);
+  
+    child.append(sectionContent, project)
+  }
+}
+
+export const createProject = (projectItem) => {
   const project = element.create('div', ['project-btn', 'btn'])
   // setAttribute
-  project.setAttribute('data-project', '1');
-  const projectIcon = element.create('div', ['project-icon'])
-  const projectName = element.create('div', ['project-name'], 'Project-1')
+  project.setAttribute('data-project', projectItem.id);
+  const projectIcon = element.create('div', ['project-icon'], projectItem.icon)
+  const projectName = element.create('div', ['project-name'], projectItem.title)
   const projectActions = element.create('div', ['project-actions'])
   const projectEditButton = element.create('i', ['fas', 'fa-edit', 'edit-btn'])
   const projectDeleteButton = element.create('i', ['fas', 'fa-trash', 'remove-btn'])
@@ -74,10 +94,10 @@ const createProjects = (sectionContent) => {
 
   child.append(project, projectIcon, projectName, projectActions);
 
-  child.append(sectionContent, project)
+  return project;
 }
 
-export default (() => {
+export default () => {
   const aside = element.create('aside');
 
   // Aside Header
@@ -112,4 +132,4 @@ export default (() => {
 
   child.append(aside, asideHeader, createSectionTop(), createSectionBottom(), footer);
   return aside;
-})()
+}

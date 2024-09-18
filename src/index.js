@@ -14,16 +14,13 @@ import test from './logic/test'
 (() => {
   const appendContent = () => {
     const body = document.querySelector("body");
-
-    body.appendChild(aside);
+        
+    body.appendChild(aside());
     body.appendChild(main);
-
     buttonHandlers();
     inboxHandlers();
   }
 
-  window.onload = () => {
-    appendContent();
-    test();
-  }
+  test();
+  appendContent();
 })()
