@@ -10,13 +10,14 @@ import projects from "../components/projects";
 export default () => {
   return {
     addTodo: () => {
-      const projectWrapper = document.querySelector('main .project');
-      const todo = document.querySelector('main .todo-wrapper')
       let todoData = inputValidator.validateTodoInput();
 
       if(!todoData) {
         return;
       }
+
+      const projectWrapper = document.querySelector('main .project');
+      const todo = document.querySelector('main .todo-wrapper')
 
       const todoId = parseInt(document.querySelector('.modal .modal-container').dataset.id);
 
@@ -29,45 +30,7 @@ export default () => {
       if(todoId) {
         todoData = todoManager.createTodo(todoData.title, todoData.date, todoData.description, todoData.priority, todoData.projectId, parseInt(todoId));
 
-        if(parseInt(projectActive) === todoData.projectId){
-          const todos = Array.from(document.querySelectorAll('main .todo-card'))
-
-          const todo = todos.find(item => item.dataset.todo == todoId);
-
-          const detail = document.querySelector('.details');
-          detail.remove();
-          const body = document.querySelector('body');
-          body.appendChild(details(todoData));
-
-          console.log(todoData.date);
-
-          const todoDate = formatDistanceToNow(
-            todoData.date,
-            {addSuffix: true}
-          )
-          
-          todo.querySelector('.todo-title').textContent = todoData.title;
-          todo.querySelector('.todo-time').textContent = todoDate;
-          todo.querySelector('.todo-description').textContent = todoData.description;
-          todo.querySelector('.todo-priority').textContent = todoData.priority;
-          
-          todo.classList.remove('high')
-          todo.classList.remove('medium')
-          todo.classList.remove('low')
-          todo.classList.add(`${todoData.priority}`);
-        }else {
-          const todos = Array.from(document.querySelectorAll('main .todo-card'))
-
-          const todo = todos.find(item => item.dataset.todo == todoId);
-
-          todo.remove();
-
-          if(todos.length <= 1){
-            projectWrapper.textContent = '';
-            projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
-            removeDetails();
-          }
-        }
+        todoEditDOMHandler(todoId, todoData, projectActive);
       }else {
         const newTodo = todoManager.createTodo(todoData.title, todoData.date, todoData.description, todoData.priority, todoData.projectId);
 
@@ -101,8 +64,49 @@ export default () => {
         todoCard.remove();
       }
 
-
       todoManager.removeTodo(todoId);
+      removeDetails();
+    }
+  }
+}
+
+const todoEditDOMHandler = (todoId, todoData, projectActive) => {
+  if(parseInt(projectActive) === todoData.projectId){
+    const todos = Array.from(document.querySelectorAll('main .todo-card'))
+
+    const todo = todos.find(item => item.dataset.todo == todoId);
+
+    const detail = document.querySelector('.details');
+    detail.remove();
+    const body = document.querySelector('body');
+    body.appendChild(details(todoData));
+
+    console.log(todoData.date);
+
+    const todoDate = formatDistanceToNow(
+      todoData.date,
+      {addSuffix: true}
+    )
+    
+    todo.querySelector('.todo-title').textContent = todoData.title;
+    todo.querySelector('.todo-time').textContent = todoDate;
+    todo.querySelector('.todo-description').textContent = todoData.description;
+    todo.querySelector('.todo-priority').textContent = todoData.priority;
+    
+    todo.classList.remove('high')
+    todo.classList.remove('medium')
+    todo.classList.remove('low')
+    todo.classList.add(`${todoData.priority}`);
+  }else {
+    const todos = Array.from(document.querySelectorAll('main .todo-card'));
+
+    const todo = todos.find(item => item.dataset.todo == todoId);
+
+    todo.remove();
+
+    if(todos.length <= 1){
+      projectWrapper.textContent = '';
+      projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
       removeDetails();
     }
   }

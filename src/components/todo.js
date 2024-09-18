@@ -2,14 +2,11 @@
 import element from '../utils/createElement';
 import child from '../utils/appendChild';
 
-// Manager
-import todoManager from "../logic/todoManager";
-
 // Dependencies
 import { formatDistanceToNow } from "date-fns";
 
-export default (projectId) => {
-  const todo = createTodoList(todoManager.getTodoByProjectId(projectId));
+export default (todoList) => {
+  const todo = createTodoList(todoList);
   
   return todo;
 }

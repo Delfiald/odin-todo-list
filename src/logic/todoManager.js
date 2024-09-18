@@ -2,13 +2,13 @@ export default (() => {
   let todoList = [];
   let todoIdCounter = 1;
 
-  const createTodoObject = (title, date, description, priority, projectId, id) => ({
+  const createTodoObject = (title, date, description, priority, projectId, id, completed = false) => ({
       id: id,
       title: title,
       date: date,
       description: description,
       priority: priority,
-      completed: false,
+      completed: completed,
       projectId: projectId
   })
 
@@ -21,7 +21,8 @@ export default (() => {
       const existingIndex = findIndex(id);
 
       if(existingIndex !== -1) {
-        todoList[existingIndex] = createTodoObject(title, date, description, priority, projectId, id);
+        const completed = todoList[existingIndex].completed
+        todoList[existingIndex] = createTodoObject(title, date, description, priority, projectId, id, completed);
         return todoList[existingIndex];
       }else {
         const todo = createTodoObject(title, date, description, priority, projectId, id);

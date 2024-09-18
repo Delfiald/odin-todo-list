@@ -615,10 +615,6 @@ main .project .empty-container .todo-add-btn {
   color: var(--color-200-light);
 }
 
-.project .todo-wrapper .todo-add-btn {
-  
-}
-
 /* Details */
 .details {
   top: 0;

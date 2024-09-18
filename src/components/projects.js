@@ -18,7 +18,7 @@ export default (dataset) => {
     const addText = element.create('div', ['add-text'], 'New Todo');
   
     child.append(addButton, addIcon, addText);
-    child.append(projects, addButton, todo(dataset))
+    child.append(projects, addButton, todo(todoList))
   }
 
   return projects;
