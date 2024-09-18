@@ -22,9 +22,11 @@ export default (() => {
 
       if(existingIndex !== -1) {
         todoList[existingIndex] = createTodoObject(title, date, description, priority, projectId, id);
+        return todoList[existingIndex];
       }else {
         const todo = createTodoObject(title, date, description, priority, projectId, id);
         todoList.push(todo);
+        return todo;
       }
     },
     setPriority: (id, priority) => {

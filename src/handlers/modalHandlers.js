@@ -17,8 +17,9 @@ export default (() => {
       const modalComponent = modal.addProject(projectId);
       body.appendChild(modalComponent)
     },
-    editTodo: () => {
-      const modalComponent = modal.editTodo();
+    editTodo: (e) => {
+      const todoId = e.target.closest('.details').dataset.todo;
+      const modalComponent = modal.addTodo(todoId);
       body.appendChild(modalComponent)
     },
     removeProject: (e) => {

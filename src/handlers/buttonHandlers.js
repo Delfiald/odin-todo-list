@@ -2,15 +2,14 @@ import inboxHandlers from "./inboxHandlers";
 import upcomingHandlers from "./upcomingHandlers";
 import completedHandlers from "./completedHandlers";
 import modeButton from './modeButtonHandlers'
-import projectsHandler from "./projectsHandler";
-import projectRemoveHandlers from "./projectRemoveHandlers";
-import projectEditHandlers from "./projectEditHandlers";
 import todoCardHandlers from "./todoCardHandlers";
+import projectsHandler from "./projectsHandler";
 
 import {removeDetails} from "./detailsHandlers";
-import modal from "../components/modal";
 import modalHandlers from "./modalHandlers";
 import projectActions from "./projectActions";
+import dropdownHandlers from "./dropdownHandlers";
+import todoActions from "./todoActions";
 
 export default () => {
   document.addEventListener('click', (e) => {
@@ -39,15 +38,23 @@ export default () => {
       projectActions().addProject();
     }else if(target.closest('.modal .remove .submit-btn')){
       projectActions().removeProject();
+    }else if(target.closest('.modal .todo .submit-btn')){
+      todoActions().addTodo();
+    }else if(target.closest('.details .remove-btn')){
+      todoActions().removeTodo();
+    }else if(target.closest('.details .edit-btn')){
+      modalHandlers.editTodo(e);
     }else if(target.closest('.todo-card .todo-complete') || target.closest('.details .completed')){
       todoCardHandlers(e).setToCompleted();
     }else if(target.closest('.todo-add-btn')) {
-      modal.addTodo;
+      modalHandlers.addTodo();
     }else if(target.closest('.modal .cancel-btn')) {
       modalHandlers.removeModal();
     }
     else if(target.closest('.todo-card')){
       todoCardHandlers(e).getTodoDetails();
+    }else if(target.closest('.modal .dropdown') || target.closest('.modal .dropdown-items')){
+      dropdownHandlers(e);
     }else if(target.closest('.mode-btn')){
       modeButton();
     }

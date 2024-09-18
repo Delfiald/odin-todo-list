@@ -1,7 +1,9 @@
 import element from '../utils/createElement'
 import child from '../utils/appendChild'
+import { add } from 'date-fns'
 
 export default (todo) => {
+  const todoDate = convertDate(todo.date);
   const details = element.create('section', ['details'])
   details.setAttribute('data-todo', todo.id);
   const detailsWrapper = element.create('div', ['details-wrapper']);
@@ -10,7 +12,7 @@ export default (todo) => {
   const priorityIndicator = element.create('div', ['priority-indicator', `${todo.priority}`])
   const priorityText = element.create('div', ['priority-text'], todo.priority)
   child.append(priority, priorityIndicator, priorityText)
-  const date = element.create('div', ['date'], todo.date);
+  const date = element.create('div', ['date'], todoDate);
   const descriptions = element.create('div', ['description'], todo.description);
   const completed = element.create('div', ['completed']);
   const completedText = element.create('div', ['completed-text'], isCompleted(todo.completed))
@@ -41,4 +43,8 @@ const isCompleted = (completed) => {
   else {
     return 'Incomplete';
   }
+}
+
+const convertDate = (date) => {
+  return add(new Date(date), {})
 }
