@@ -2,7 +2,7 @@ import inputValidator from "../utils/inputValidator";
 import todoManager from "../logic/todoManager";
 import {createTodo} from "../components/todo"
 import {removeDetails} from "./detailsHandlers";
-import { formatDistanceToNow } from "date-fns";
+import { addDays, formatDistanceToNow, isAfter, isBefore } from "date-fns";
 import details from "../components/details";
 import emptyComponentHandlers from "../components/emptyComponentHandlers";
 import projects from "../components/projects";
@@ -86,48 +86,110 @@ export default () => {
   }
 }
 
+// const todoEditDOMHandler = (todoId, todoData, projectActive, projectWrapper) => {
+//   if(parseInt(projectActive) === todoData.projectId){
+//     const todos = Array.from(document.querySelectorAll('main .todo-card'))
+
+//     const todo = todos.find(item => item.dataset.todo == todoId);
+
+//     const detail = document.querySelector('.details');
+//     detail.remove();
+//     const body = document.querySelector('body');
+//     body.appendChild(details(todoData));
+
+//     console.log(todoData.date);
+
+//     const todoDate = formatDistanceToNow(
+//       todoData.date,
+//       {addSuffix: true}
+//     )
+    
+//     todo.querySelector('.todo-title').textContent = todoData.title;
+//     todo.querySelector('.todo-time').textContent = todoDate;
+//     todo.querySelector('.todo-description').textContent = todoData.description;
+//     todo.querySelector('.todo-priority').textContent = todoData.priority;
+    
+//     todo.classList.remove('high')
+//     todo.classList.remove('medium')
+//     todo.classList.remove('low')
+//     todo.classList.add(`${todoData.priority}`);
+//   }else {
+//     const todos = Array.from(document.querySelectorAll('main .todo-card'));
+
+//     const todo = todos.find(item => item.dataset.todo == todoId);
+    
+//     if(todos.length <= 1){
+//       const upcoming = document.querySelector('main .upcoming')
+//       if(projectWrapper){
+//         todo.remove();
+//         projectWrapper.textContent = '';
+//         projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+//       }else if(upcoming){
+//         upcomingHandlers();
+//       }
+//       removeDetails();
+//     }
+//   }
+// }
+
 const todoEditDOMHandler = (todoId, todoData, projectActive, projectWrapper) => {
-  if(parseInt(projectActive) === todoData.projectId){
-    const todos = Array.from(document.querySelectorAll('main .todo-card'))
+  const todos = Array.from(document.querySelectorAll('main .todo-card'))
 
-    const todo = todos.find(item => item.dataset.todo == todoId);
+  const todo = todos.find(item => item.dataset.todo == todoId);
+  
+  const upcoming = document.querySelector('main .upcoming')
 
-    const detail = document.querySelector('.details');
-    detail.remove();
-    const body = document.querySelector('body');
-    body.appendChild(details(todoData));
+  if(projectActive && parseInt(projectActive) !== parseInt(todoData.projectId)){
+    todo.remove();
+    isCardEmpty(todos, todo, projectWrapper, upcoming);
+    return;
+  }
 
-    console.log(todoData.date);
+  if(upcoming && !isInThisWeek(todoData)){
+    todo.remove();
+    isCardEmpty(todos, todo, projectWrapper, upcoming);
+    return;
+  }
 
-    const todoDate = formatDistanceToNow(
-      todoData.date,
-      {addSuffix: true}
-    )
-    
-    todo.querySelector('.todo-title').textContent = todoData.title;
-    todo.querySelector('.todo-time').textContent = todoDate;
-    todo.querySelector('.todo-description').textContent = todoData.description;
-    todo.querySelector('.todo-priority').textContent = todoData.priority;
-    
-    todo.classList.remove('high')
-    todo.classList.remove('medium')
-    todo.classList.remove('low')
-    todo.classList.add(`${todoData.priority}`);
-  }else {
-    const todos = Array.from(document.querySelectorAll('main .todo-card'));
+  const detail = document.querySelector('.details');
+  detail.remove();
+  const body = document.querySelector('body');
+  body.appendChild(details(todoData));
 
-    const todo = todos.find(item => item.dataset.todo == todoId);
-    
-    if(todos.length <= 1){
-      const upcoming = document.querySelector('main .upcoming')
-      if(projectWrapper){
-        todo.remove();
-        projectWrapper.textContent = '';
-        projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
-      }else if(upcoming){
-        upcomingHandlers();
-      }
-      removeDetails();
+  console.log(todoData.date);
+
+  const todoDate = formatDistanceToNow(
+    todoData.date,
+    {addSuffix: true}
+  )
+  
+  todo.querySelector('.todo-title').textContent = todoData.title;
+  todo.querySelector('.todo-time').textContent = todoDate;
+  todo.querySelector('.todo-description').textContent = todoData.description;
+  todo.querySelector('.todo-priority').textContent = todoData.priority;
+  
+  todo.classList.remove('high')
+  todo.classList.remove('medium')
+  todo.classList.remove('low')
+  todo.classList.add(`${todoData.priority}`);
+}
+
+const isInThisWeek = (todoData) => {
+  const now = new Date();
+  const oneWeekLater = addDays(now, 7);
+
+  return isAfter(todoData.date, now) && isBefore(todoData.date, oneWeekLater);
+}
+
+const isCardEmpty = (todos, todo, projectWrapper, upcoming) => {
+  if(todos.length <= 1){
+    if(projectWrapper){
+      todo.remove();
+      projectWrapper.textContent = '';
+      projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+    }else if(upcoming){
+      upcomingHandlers();
     }
+    removeDetails();
   }
 }
