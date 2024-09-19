@@ -24,10 +24,20 @@ export default (e) => {
       notificationHandlers();
     },
     getTodoDetails: () => {
+      addActiveClass(card);
       const todo = todoManager.getTodoById(todoDataset);
       detailsHandlers(todo);
     }
   }
+}
+
+const addActiveClass = (card) => {
+  const cards = document.querySelectorAll('.todo-card');
+
+  cards.forEach(card => {
+    card.classList.remove('detail-active');
+  })
+  card.classList.add('detail-active');
 }
 
 export const setCardsCompleted = () => {
