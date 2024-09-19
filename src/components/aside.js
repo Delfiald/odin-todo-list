@@ -1,6 +1,8 @@
 import element from '../utils/createElement'
 import child from '../utils/appendChild'
 import projectManager from '../logic/projectManager';
+import { upcomingItemManager } from '../handlers/upcomingHandlers';
+import { inboxItemManager } from '../handlers/inboxHandlers';
 
 const createSectionTop = () => {
   // Aside Content
@@ -11,15 +13,15 @@ const createSectionTop = () => {
   const textInbox = element.create('div', [], 'Inbox')
 
   const inboxNotifications = element.create('div', ['inbox-notifications'])
-  const notifications1 = element.create('div', ['notifications'], '1')
+  const notifications1 = element.create('div', ['notifications'], inboxItemManager().length)
   child.append(inboxNotifications, notifications1)
   child.append(inbox, iconInbox, textInbox, inboxNotifications);
 
   const upcoming = element.create('div', ['upcoming-btn', 'btn'])
   const iconUpcoming = element.create('i', ['fas', 'fa-calendar'])
   const textUpcoming = element.create('div', [], 'Upcoming')
-  const upcomingNotifications = element.create('div', ['inbox-notifications'])
-  const notifications2 = element.create('div', ['notifications'], '1')
+  const upcomingNotifications = element.create('div', ['upcoming-notifications'])
+  const notifications2 = element.create('div', ['notifications'], upcomingItemManager().length)
   child.append(upcomingNotifications, notifications2)
   child.append(upcoming, iconUpcoming, textUpcoming, upcomingNotifications)
 
@@ -63,18 +65,7 @@ const createProjects = (sectionContent) => {
   sectionContent.textContent = '';
   const projects = projectManager.getProject();
   for(let projectItem of projects){
-    const project = element.create('div', ['project-btn', 'btn'])
-    // setAttribute
-    project.setAttribute('data-project', projectItem.id);
-    const projectIcon = element.create('div', ['project-icon'], projectItem.icon)
-    const projectName = element.create('div', ['project-name'], projectItem.title)
-    const projectActions = element.create('div', ['project-actions'])
-    const projectEditButton = element.create('i', ['fas', 'fa-edit', 'edit-btn'])
-    const projectDeleteButton = element.create('i', ['fas', 'fa-trash', 'remove-btn'])
-  
-    child.append(projectActions, projectEditButton, projectDeleteButton)
-  
-    child.append(project, projectIcon, projectName, projectActions);
+    const project = createProject(projectItem);
   
     child.append(sectionContent, project)
   }
@@ -84,7 +75,10 @@ export const createProject = (projectItem) => {
   const project = element.create('div', ['project-btn', 'btn'])
   // setAttribute
   project.setAttribute('data-project', projectItem.id);
-  const projectIcon = element.create('div', ['project-icon'], projectItem.icon)
+  const projectIcon = element.create('div', ['project-icon'])
+  const projectImg = element.create('img', ['icon'])
+  projectImg.setAttribute('src', projectItem.icon);
+  child.append(projectIcon, projectImg);
   const projectName = element.create('div', ['project-name'], projectItem.title)
   const projectActions = element.create('div', ['project-actions'])
   const projectEditButton = element.create('i', ['fas', 'fa-edit', 'edit-btn'])

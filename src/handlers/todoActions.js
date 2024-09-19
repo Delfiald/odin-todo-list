@@ -4,8 +4,10 @@ import {createTodo} from "../components/todo"
 import {removeDetails} from "./detailsHandlers";
 import { formatDistanceToNow } from "date-fns";
 import details from "../components/details";
-import emptyComponentHandlers from "./emptyComponentHandlers";
+import emptyComponentHandlers from "../components/emptyComponentHandlers";
 import projects from "../components/projects";
+import notificationHandlers from "./notificationHandlers";
+import upcomingHandlers from "./upcomingHandlers";
 
 export default () => {
   return {
@@ -30,7 +32,7 @@ export default () => {
       if(todoId) {
         todoData = todoManager.createTodo(todoData.title, todoData.date, todoData.description, todoData.priority, todoData.projectId, parseInt(todoId));
 
-        todoEditDOMHandler(todoId, todoData, projectActive);
+        todoEditDOMHandler(todoId, todoData, projectActive, projectWrapper);
       }else {
         const newTodo = todoManager.createTodo(todoData.title, todoData.date, todoData.description, todoData.priority, todoData.projectId);
 
@@ -39,13 +41,15 @@ export default () => {
             todo.appendChild(createTodo(newTodo));
           }
         }else{
-          projectWrapper.textContent = '';
-          projectWrapper.appendChild(projects(todoData.projectId));
+          projectWrapper.remove();
+          const main = document.querySelector('main')
+          main.appendChild(projects(todoData.projectId));
         }
       }
     
       const modal = document.querySelector('.modal');
       modal.remove();
+      notificationHandlers();
     },
     removeTodo: () => {
       const projectWrapper = document.querySelector('main .project');
@@ -56,8 +60,19 @@ export default () => {
       let todoCard = todoCards.find(card => parseInt(card.dataset.todo) === todoId)
 
       if(todoCards.length <= 1){
-        projectWrapper.textContent = '';
-        projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+        if(projectWrapper){
+          projectWrapper.textContent = '';
+          projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+        }else{
+          const getActiveAside = document.querySelector('.todo-wrapper').parentElement;
+          if(getActiveAside.className === 'inbox'){
+            getActiveAside.appendChild(emptyComponentHandlers().inboxEmpty());
+          }else if(getActiveAside.className === 'upcoming'){
+            getActiveAside.appendChild(emptyComponentHandlers().upcomingEmpty());
+          }else if(getActiveAside.className === 'completed'){
+            getActiveAside.appendChild(emptyComponentHandlers().completedEmpty());
+          }
+        }
       }
 
       if(todoCard) {
@@ -66,11 +81,12 @@ export default () => {
 
       todoManager.removeTodo(todoId);
       removeDetails();
+      notificationHandlers();
     }
   }
 }
 
-const todoEditDOMHandler = (todoId, todoData, projectActive) => {
+const todoEditDOMHandler = (todoId, todoData, projectActive, projectWrapper) => {
   if(parseInt(projectActive) === todoData.projectId){
     const todos = Array.from(document.querySelectorAll('main .todo-card'))
 
@@ -101,12 +117,16 @@ const todoEditDOMHandler = (todoId, todoData, projectActive) => {
     const todos = Array.from(document.querySelectorAll('main .todo-card'));
 
     const todo = todos.find(item => item.dataset.todo == todoId);
-
-    todo.remove();
-
+    
     if(todos.length <= 1){
-      projectWrapper.textContent = '';
-      projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+      const upcoming = document.querySelector('main .upcoming')
+      if(projectWrapper){
+        todo.remove();
+        projectWrapper.textContent = '';
+        projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
+      }else if(upcoming){
+        upcomingHandlers();
+      }
       removeDetails();
     }
   }
