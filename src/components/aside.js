@@ -101,11 +101,16 @@ export default () => {
   child.append(headerWrapper, headerText);
   child.append(asideHeader, headerWrapper);
 
+  // Hide Button
+  const hideAside = element.create('div', ['hide-aside-btn']);
+  const hideIcon = element.create('i', ['fas','fa-chevron-left'])
+  child.append(hideAside, hideIcon)
+
   // Modes
   const modeButton = element.create('div', ['mode-btn', 'btn'])
   const modeWrapper = element.create('div', ['mode-wrapper']);
   child.append(modeButton, modeWrapper);
-  child.append(asideHeader, modeButton)
+  child.append(asideHeader, hideAside, modeButton)
 
   // Aside Footer
   const footer = element.create('footer');

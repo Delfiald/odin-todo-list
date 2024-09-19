@@ -12,4 +12,9 @@ export const removeDetails = () => {
   if(detail) {
     detail.remove()
   }
+
+  const cards = document.querySelectorAll('main .todo-card');
+  cards.forEach(card => {
+    card.classList.remove('detail-active')
+  })
 }
