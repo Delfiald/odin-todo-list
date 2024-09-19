@@ -86,52 +86,6 @@ export default () => {
   }
 }
 
-// const todoEditDOMHandler = (todoId, todoData, projectActive, projectWrapper) => {
-//   if(parseInt(projectActive) === todoData.projectId){
-//     const todos = Array.from(document.querySelectorAll('main .todo-card'))
-
-//     const todo = todos.find(item => item.dataset.todo == todoId);
-
-//     const detail = document.querySelector('.details');
-//     detail.remove();
-//     const body = document.querySelector('body');
-//     body.appendChild(details(todoData));
-
-//     console.log(todoData.date);
-
-//     const todoDate = formatDistanceToNow(
-//       todoData.date,
-//       {addSuffix: true}
-//     )
-    
-//     todo.querySelector('.todo-title').textContent = todoData.title;
-//     todo.querySelector('.todo-time').textContent = todoDate;
-//     todo.querySelector('.todo-description').textContent = todoData.description;
-//     todo.querySelector('.todo-priority').textContent = todoData.priority;
-    
-//     todo.classList.remove('high')
-//     todo.classList.remove('medium')
-//     todo.classList.remove('low')
-//     todo.classList.add(`${todoData.priority}`);
-//   }else {
-//     const todos = Array.from(document.querySelectorAll('main .todo-card'));
-
-//     const todo = todos.find(item => item.dataset.todo == todoId);
-    
-//     if(todos.length <= 1){
-//       const upcoming = document.querySelector('main .upcoming')
-//       if(projectWrapper){
-//         todo.remove();
-//         projectWrapper.textContent = '';
-//         projectWrapper.appendChild(emptyComponentHandlers().projectEmpty());
-//       }else if(upcoming){
-//         upcomingHandlers();
-//       }
-//       removeDetails();
-//     }
-//   }
-// }
-
 const todoEditDOMHandler = (todoId, todoData, projectActive, projectWrapper) => {
   const todos = Array.from(document.querySelectorAll('main .todo-card'))
 
