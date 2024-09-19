@@ -33,7 +33,7 @@ export default () => {
       modalHandlers.removeProject(e);
     }else if(target.closest('.bottom-wrapper .project-btn')){
       projectsHandler(e);
-      headerHandlers(e);
+      headerHandlers();
       removeDetails();
     }else if(e.target.closest('.details .close-btn')){
       removeDetails();

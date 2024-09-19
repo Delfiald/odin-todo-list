@@ -1,21 +1,14 @@
 export default (title) => {
   const headerText = document.querySelector('.header-text');
 
-  if (typeof title !== 'string') {
-    const projectNameElement = title.target.closest('aside .active .project-name');
-    
-    if (projectNameElement) {
-      title = projectNameElement.textContent;
+  if(title) {
+    if (headerText) {
+      headerText.textContent = title;
     } else {
-      console.error("Error: .project-name element not found.");
-      return;
+      console.error("Error: .header-text element not found.");
     }
-  }
-
-  if (headerText) {
-    headerText.textContent = title;
-  } else {
-    console.error("Error: .header-text element not found.");
+  }else {
+    headerText.textContent = document.querySelector('aside .active .project-name').textContent;
   }
 }
 
