@@ -10,18 +10,22 @@ import modalHandlers from "./modalHandlers";
 import projectActions from "./projectActions";
 import dropdownHandlers from "./dropdownHandlers";
 import todoActions from "./todoActions";
+import headerHandlers, { asideToggler } from "./headerHandlers";
 
 export default () => {
   document.addEventListener('click', (e) => {
     const target = e.target;
     if(target.closest('.top-wrapper .inbox-btn')){
       inboxHandlers();
+      headerHandlers('Inbox');
       removeDetails();
     }else if(target.closest('.top-wrapper .upcoming-btn')){
       upcomingHandlers();
+      headerHandlers('Upcoming');
       removeDetails();
     }else if(target.closest('.top-wrapper .completed-btn')){
       completedHandlers();
+      headerHandlers('Completed');
       removeDetails();
     }else if(target.closest('.bottom-wrapper .project-actions .edit-btn')){
       modalHandlers.editProject(e);
@@ -29,6 +33,7 @@ export default () => {
       modalHandlers.removeProject(e);
     }else if(target.closest('.bottom-wrapper .project-btn')){
       projectsHandler(e);
+      headerHandlers(e);
       removeDetails();
     }else if(e.target.closest('.details .close-btn')){
       removeDetails();
@@ -57,6 +62,10 @@ export default () => {
       dropdownHandlers(e);
     }else if(target.closest('.mode-btn')){
       modeButton();
+    }else if(target.closest('header')){
+      asideToggler();
+    }else if(target.closest('aside .hide-aside-btn')){
+      asideToggler();
     }
   })
 }
