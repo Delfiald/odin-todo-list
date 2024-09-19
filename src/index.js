@@ -9,6 +9,7 @@ import buttonHandlers from './handlers/buttonHandlers'
 import inboxHandlers from './handlers/inboxHandlers'
 import storageHandlers from './services/storageHandlers'
 import header from './components/header'
+import headerHandlers from './handlers/headerHandlers'
 
 (() => {
   const appendContent = () => {
@@ -19,6 +20,7 @@ import header from './components/header'
     body.appendChild(main);
     buttonHandlers();
     inboxHandlers();
+    headerHandlers('Inbox');
   }
 
   storageHandlers();
