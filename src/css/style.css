@@ -209,6 +209,8 @@ textarea {
 
 /* Aside */
 aside {
+  width: 100%;
+  max-width: 300px;
   top: 0;
   position: sticky;
   align-self: start;
@@ -380,9 +382,16 @@ aside .bottom .projects .project-icon {
   overflow: hidden;
   width: 25px;
   height: 25px;
-  background: var(--color-400-light);
-  border: 1px solid var(--color-600-dark);
-  border-radius: 50%;
+}
+
+aside .bottom .projects .project-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+aside .bottom .projects .project-btn.active img {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(180deg);
 }
 
 aside .bottom .projects .project-actions {
@@ -439,8 +448,34 @@ main {
   overflow-x: hidden;
 }
 
+main .empty-components {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  opacity: .5;
+  color: var(--color-600-dark);
+  font-weight: bolder;
+}
+
+main .empty-components::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+}
+
+main .empty-components i {
+  font-size: 15rem;
+}
+
 /* Project */
-main .project {
+main > section {
   position: relative;
   flex: 1;
   display: flex;
@@ -490,7 +525,7 @@ main .project .empty-container .todo-add-btn {
   color: var(--color-200-light);
 }
 
-.project .todo-wrapper {
+.todo-wrapper {
   height: 100%;
   width: 100%;
   flex: 1 1 100%;
@@ -500,7 +535,7 @@ main .project .empty-container .todo-add-btn {
   column-gap: 2.5rem;
 }
 
-.project .todo-wrapper .todo-card {
+.todo-wrapper .todo-card {
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -516,7 +551,7 @@ main .project .empty-container .todo-add-btn {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
 }
 
-.project .todo-wrapper .todo-card::before {
+.todo-wrapper .todo-card::before {
   position: absolute;
   top: 0;
   left: 0;
@@ -531,27 +566,27 @@ main .project .empty-container .todo-add-btn {
   transition: var(--transition-speed-fast) all ease;
 }
 
-.project .todo-wrapper .todo-card.completed::before {
+.todo-wrapper .todo-card.completed::before {
   transform: scale(1);
   border-radius: 10px;
 }
 
-.project .todo-wrapper .todo-card.high {
+.todo-wrapper .todo-card.high {
   --_border-color: red;
   --_text-color: var(--color-200-light);
 }
 
-.project .todo-wrapper .todo-card.medium {
+.todo-wrapper .todo-card.medium {
   --_border-color: yellow;
   --_text-color: var(--color-200-dark);
 }
 
-.project .todo-wrapper .todo-card.low {
+.todo-wrapper .todo-card.low {
   --_border-color: green;
   --_text-color: var(--color-200-light);
 }
 
-.project .todo-wrapper .todo-card .todo-date {
+.todo-wrapper .todo-card .todo-date {
   align-self: start;
   display: flex;
   font-size: .75rem;
@@ -560,13 +595,13 @@ main .project .empty-container .todo-add-btn {
   gap: 5px;
 }
 
-.project .todo-wrapper .todo-card .todo-description {
+.todo-wrapper .todo-card .todo-description {
   grid-column: 1 / -1;
   overflow-wrap: break-word;
   align-self: start;
 }
 
-.project .todo-wrapper .todo-card .todo-priority {
+.todo-wrapper .todo-card .todo-priority {
   position: absolute;
   top: 0;
   right: 0;
@@ -591,13 +626,13 @@ main .project .empty-container .todo-add-btn {
   font-size: .85rem;
 }
 
-.project .todo-wrapper .todo-card:hover .todo-priority {
+.todo-wrapper .todo-card:hover .todo-priority {
   transform: translateX(85%);
   opacity: 1;
   visibility: visible;
 }
 
-.project .todo-wrapper .todo-card .todo-complete {
+.todo-wrapper .todo-card .todo-complete {
   grid-column: 1 / -1;
   position: relative;
   cursor: pointer;
@@ -610,7 +645,7 @@ main .project .empty-container .todo-add-btn {
   transition: var(--transition-speed-fast) all ease;
 }
 
-.project .todo-wrapper .todo-card .todo-complete:hover {
+.todo-wrapper .todo-card .todo-complete:hover {
   background: green;
   color: var(--color-200-light);
 }
@@ -828,9 +863,9 @@ main .project .empty-container .todo-add-btn {
   position: relative;
   width: 30px;
   height: 30px;
-  background: var(--color-700-light);
   border-radius: 50%;
-  transition: var(--transition-speed-fast) all ease;
+  border: 1px solid var(--color-600-dark);
+  transition: var(--transition-speed-medium) all ease;
 }
 
 .modal .input.radio > div input {
@@ -846,6 +881,12 @@ main .project .empty-container .todo-add-btn {
   height: 100%;
   cursor: pointer;
   border-radius: 50%;
+}
+
+.modal .input.radio > div label img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .modal .input.radio > div:hover {

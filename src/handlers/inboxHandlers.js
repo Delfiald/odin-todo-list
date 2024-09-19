@@ -1,4 +1,5 @@
 import createInbox from "../components/inbox"
+import todoManager from "../logic/todoManager";
 import navigationButtonHandlers from "./navigationButtonHandlers";
 
 export default () => {
@@ -7,5 +8,11 @@ export default () => {
 
   navigationButtonHandlers(INBOX_BUTTON);
   main.innerHTML = ''
-  main.appendChild(createInbox);
+  main.appendChild(createInbox(inboxItemManager()));
+}
+
+export const inboxItemManager = () => {
+  const todoList = todoManager.getTodoList();
+  
+  return todoList;
 }

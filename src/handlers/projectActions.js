@@ -3,6 +3,7 @@ import projectManager from "../logic/projectManager"
 import todoManager from "../logic/todoManager";
 import inputValidator from "../utils/inputValidator"
 import inboxHandlers from "./inboxHandlers";
+import notificationHandlers from "./notificationHandlers";
 
 export default () => {
   return {
@@ -42,10 +43,9 @@ export default () => {
 
       const modal = document.querySelector('.modal');
       modal.remove();
-      
-      if(document.querySelector('main .project')){
-        inboxHandlers()
-      }
+
+      inboxHandlers()
+      notificationHandlers();
     }
   }
 }
@@ -55,7 +55,7 @@ const editProject = (projectId, projectData) => {
 
   const project = projects.find(item => item.dataset.project == projectId);
 
-  project.querySelector('.project-icon').textContent = projectData.icon;
+  project.querySelector('.project-icon img').setAttribute('src', projectData.icon);
 
   project.querySelector('.project-name').textContent = projectData.title;
 }

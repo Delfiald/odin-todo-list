@@ -1,5 +1,8 @@
 import todoManager from "../logic/todoManager";
-import detailsHandlers from "./detailsHandlers";
+import completedHandlers from "./completedHandlers";
+import detailsHandlers, { removeDetails } from "./detailsHandlers";
+import notificationHandlers from "./notificationHandlers";
+import upcomingHandlers from "./upcomingHandlers";
 
 export default (e) => {
   const card = e.target.closest('.todo-card') || e.target.closest('.details');
@@ -15,7 +18,10 @@ export default (e) => {
       todoManager.setCompleted(todoDataset);
       setCardsCompleted();
       const todo = todoManager.getTodoById(todoDataset);
-      detailsHandlers(todo);
+      if(document.querySelector('.details')){
+        detailsHandlers(todo);
+      }
+      notificationHandlers();
     },
     getTodoDetails: () => {
       const todo = todoManager.getTodoById(todoDataset);
@@ -35,22 +41,25 @@ export const setCardsCompleted = () => {
     if (todo.completed) {
       completeText.textContent = 'Completed'
       card.classList.add('completed');
+      if(document.querySelector('aside .active').classList.contains('upcoming-btn')){
+        upcomingCardHandler(card);
+      }
     } else {
       completeText.textContent = 'Incomplete'
       card.classList.remove('completed');
+      if(document.querySelector('aside .active').classList.contains('completed-btn')){
+        completedCardHandler(card);
+      }
     }
   });
 }
 
-const getCard = (todoDataset) => {
-  const cards = document.querySelectorAll('.todo-card')
-  let card;
-  cards.forEach(item => {
-    const dataset = parseInt(item.dataset.todo);
-    if(dataset === todoDataset){
-      card = item;
-    }
-  })
+const upcomingCardHandler = () => {
+  upcomingHandlers();
+  removeDetails();
+}
 
-  return card;
+const completedCardHandler = () => {
+  completedHandlers();
+  removeDetails();
 }

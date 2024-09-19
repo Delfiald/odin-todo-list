@@ -4,7 +4,7 @@ import child from '../utils/appendChild'
 import todo from "../components/todo";
 import todoManager from '../logic/todoManager';
 
-import emptyComponentHandlers from '../handlers/emptyComponentHandlers';
+import emptyComponentHandlers from './emptyComponentHandlers';
 
 export default (dataset) => {
   const projects = element.create('section', ['project']);

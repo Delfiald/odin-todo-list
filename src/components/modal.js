@@ -3,6 +3,11 @@ import child from '../utils/appendChild'
 import projectManager from '../logic/projectManager';
 import todoManager from '../logic/todoManager';
 
+// SVG
+import folder1 from '../assets/folder1.svg'
+import folder2 from '../assets/folder2.svg'
+import folder3 from '../assets/folder3.svg'
+
 export default (() => {
   const modal = element.create('div', ['modal']);
 
@@ -25,19 +30,22 @@ export default (() => {
 
     const icon = element.create('div', ['input', 'radio'])
     const icons = [
-      {class: 'icon-1', value: 'icon-1'},
-      {class: 'icon-2', value: 'icon-2'},
-      {class: 'icon-3', value: 'icon-3'}
+      {class: 'icon-1', value: folder1},
+      {class: 'icon-2', value: folder2},
+      {class: 'icon-3', value: folder3}
     ];
 
     icons.forEach(({ class: iconClass, value }) => {
       const iconDiv = element.create('div', [iconClass]);
       const iconRadio = element.create('input', []);
+      const iconImage = element.create('img', [])
       iconRadio.setAttribute('type', 'radio');
       iconRadio.setAttribute('name', 'icon');
       iconRadio.setAttribute('id', value);
       iconRadio.setAttribute('value', value);
       const iconLabel = element.create('label');
+      iconImage.setAttribute('src', value);
+      child.append(iconLabel, iconImage);
       iconLabel.setAttribute('for', value);
 
       if(projectId) {
@@ -151,9 +159,8 @@ export default (() => {
     // Project
     const getProject = projectManager.getProject();
     const projectAside = document.querySelector('aside .project-btn.active');
-    console.log(projectAside);
-    const projectId = projectAside.dataset.project;
-    const getActiveProject = getProject.find(item => item.id === parseInt(projectId));
+    const projectId = projectAside ? projectAside.dataset.project : null;
+    const getActiveProject = projectId ? getProject.find(item => item.id === parseInt(projectId)) : getProject[0];
 
     const project = element.create('div', ['input', 'dropdown', 'project']);
     const inputProject = element.create('div', ['dropdown']);

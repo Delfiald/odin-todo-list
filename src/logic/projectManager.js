@@ -1,6 +1,6 @@
 export default (() => {
-  const projectList = [];
-  let projectIdCounter = 1;
+  const projectList = JSON.parse(localStorage.getItem('project')) || [];
+  let projectIdCounter = projectList.length ? Math.max(...projectList.map(p => p.id)) + 1 : 1;
 
   const newProjectObject = (title, icon, id) => ({
     id: id,
@@ -18,10 +18,14 @@ export default (() => {
 
       if(index !== -1){
         projectList[index] = newProjectObject(title, icon, id);
+        const json = JSON.stringify(projectList);
+        localStorage.setItem('project', json);
         return projectList[index];
       }else {
         const project = newProjectObject(title, icon, id)
         projectList.push(project);
+        const json = JSON.stringify(projectList);
+        localStorage.setItem('project', json);
         return project;
       }
     },
@@ -34,6 +38,8 @@ export default (() => {
       }
       
       projectList.splice(index, 1);
+      const json = JSON.stringify(projectList);
+      localStorage.setItem('project', json);
     },
 
     getProject: () => {

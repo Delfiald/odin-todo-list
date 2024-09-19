@@ -7,9 +7,7 @@ import main from './components/main'
 // Handlers
 import buttonHandlers from './handlers/buttonHandlers'
 import inboxHandlers from './handlers/inboxHandlers'
-
-// Test
-import test from './logic/test'
+import storageHandlers from './services/storageHandlers'
 
 (() => {
   const appendContent = () => {
@@ -21,6 +19,6 @@ import test from './logic/test'
     inboxHandlers();
   }
 
-  test();
+  storageHandlers();
   appendContent();
 })()

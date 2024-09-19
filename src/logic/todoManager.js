@@ -1,6 +1,6 @@
 export default (() => {
-  let todoList = [];
-  let todoIdCounter = 1;
+  let todoList = JSON.parse(localStorage.getItem('todo')) || [];
+  let todoIdCounter = todoList.length ? Math.max(...todoList.map(p => p.id)) + 1 : 1;
 
   const createTodoObject = (title, date, description, priority, projectId, id, completed = false) => ({
       id: id,
@@ -23,10 +23,14 @@ export default (() => {
       if(existingIndex !== -1) {
         const completed = todoList[existingIndex].completed
         todoList[existingIndex] = createTodoObject(title, date, description, priority, projectId, id, completed);
+        const json = JSON.stringify(todoList);
+        localStorage.setItem('todo', json);
         return todoList[existingIndex];
       }else {
         const todo = createTodoObject(title, date, description, priority, projectId, id);
         todoList.push(todo);
+        const json = JSON.stringify(todoList);
+        localStorage.setItem('todo', json);
         return todo;
       }
     },
@@ -38,6 +42,8 @@ export default (() => {
       }
 
       todoList[index].priority = priority;
+      const json = JSON.stringify(todoList);
+      localStorage.setItem('todo', json);
     },
     setCompleted: (id) => {
       const index = findIndex(id);
@@ -49,6 +55,8 @@ export default (() => {
       console.log(`todoList ${index} set to true`);
 
       todoList[index].completed = !todoList[index].completed;
+      const json = JSON.stringify(todoList);
+      localStorage.setItem('todo', json);
     },
     removeTodo: (id) => {
       const index = findIndex(id);
@@ -58,9 +66,13 @@ export default (() => {
       }
 
       todoList.splice(index, 1);
+      const json = JSON.stringify(todoList);
+      localStorage.setItem('todo', json);
     },
     removeTodoByProject: (projectId) => {
       todoList = todoList.filter(todo => todo.projectId !== projectId);
+      const json = JSON.stringify(todoList);
+      localStorage.setItem('todo', json);
     },
     getTodoList: () => {
       return [...todoList];
